@@ -1,12 +1,23 @@
-# Dependencies
+# --- Dependencies ---
 node_modules/
-**/node_modules/
 
-# Build outputs
-dist/
-build/
-.next/
-
-# Environment variables (Never commit these!)
+# --- Environment Variables (Keep these secret!) ---
 .env
 .env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# --- Next.js (Frontend) Build ---
+.next/
+out/
+build/
+.vercel/
+
+# --- Backend Build ---
+dist/
+coverage/
+
+# --- System Files ---
+.DS_Store
+Thumbs.db

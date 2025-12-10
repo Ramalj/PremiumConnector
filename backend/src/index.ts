@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import { Client } from 'pg';
+import authRoutes from './routes/auth';
+import wifiRoutes from './routes/wifi';
 
 dotenv.config();
 
@@ -11,16 +12,12 @@ const port = process.env.PORT || 8080;
 app.use(cors());
 app.use(express.json());
 
-const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-});
-
-client.connect()
-    .then(() => console.log('Database connected'))
-    .catch(err => console.error('Database connection error', err.stack));
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/wifi', wifiRoutes);
 
 app.get('/', (req, res) => {
-    res.send('API Running');
+    res.send('QRPrimeGen API Running');
 });
 
 app.listen(port, () => {
