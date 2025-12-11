@@ -40,12 +40,12 @@ export default function WiFiCard({ qr, onUpdate, onEdit }: Props) {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 className={`relative p-6 rounded-3xl border-2 transition-all duration-300 ${qr.is_active
-                    ? 'bg-white dark:bg-zinc-900 border-gray-100 dark:border-zinc-800 shadow-xl'
-                    : 'bg-gray-50 dark:bg-zinc-900/50 border-gray-200 dark:border-zinc-800 opacity-75'
+                    ? 'bg-white border-gray-100 shadow-xl'
+                    : 'bg-gray-50 border-gray-200 opacity-75'
                     }`}
             >
                 <div className="flex justify-between items-start mb-4">
-                    <div className={`p-3 rounded-2xl ${qr.is_active ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-600' : 'bg-gray-200 dark:bg-zinc-800 text-gray-400'}`}>
+                    <div className={`p-3 rounded-2xl ${qr.is_active ? 'bg-indigo-50 text-indigo-600' : 'bg-gray-200 text-gray-400'}`}>
                         <Wifi size={24} />
                     </div>
                     <button
@@ -67,13 +67,13 @@ export default function WiFiCard({ qr, onUpdate, onEdit }: Props) {
                 <div className="flex gap-3">
                     <button
                         onClick={() => setShowSticker(true)}
-                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-900 dark:bg-white text-white dark:text-black font-semibold text-sm hover:opacity-90 transition-opacity"
+                        className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-gray-900 text-white font-semibold text-sm hover:opacity-90 transition-opacity"
                     >
                         <QrCode size={16} /> Sticker
                     </button>
                     <button
                         onClick={() => onEdit(qr)}
-                        className="p-2.5 rounded-xl border border-gray-200 dark:border-zinc-800 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors"
+                        className="p-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-100 transition-colors"
                         title="Edit Details"
                     >
                         <Edit size={18} />

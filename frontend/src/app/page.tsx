@@ -13,7 +13,7 @@ export default function Home() {
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="mb-8 p-3 bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400 rounded-full text-sm font-semibold tracking-wide uppercase"
+          className="mb-8 p-3 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold tracking-wide uppercase"
         >
           ✨ The Premium QR Generator
         </motion.div>
@@ -22,7 +22,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900 dark:from-white dark:via-indigo-200 dark:to-white"
+          className="text-5xl md:text-7xl font-extrabold tracking-tight mb-6 bg-clip-text text-transparent bg-gradient-to-r from-gray-900 via-indigo-800 to-gray-900"
         >
           Share Wi-Fi <br className="hidden md:block" /> with Confidence.
         </motion.h1>
@@ -31,7 +31,7 @@ export default function Home() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="max-w-2xl text-lg md:text-xl text-gray-600 dark:text-gray-300 mb-10"
+          className="max-w-2xl text-lg md:text-xl text-gray-600 mb-10"
         >
           Generate secure, beautiful, and manageable Wi-Fi QR codes. Toggle access instantly, customize credentials, and print premium wall stickers.
         </motion.p>
@@ -50,7 +50,7 @@ export default function Home() {
           </Link>
           <Link
             href="/login"
-            className="px-8 py-4 bg-white dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-gray-900 dark:text-gray-100 rounded-full font-bold text-lg hover:bg-gray-50 dark:hover:bg-zinc-700 transition-all"
+            className="px-8 py-4 bg-white border border-gray-200 text-gray-900 rounded-full font-bold text-lg hover:bg-gray-50 transition-all"
           >
             Login
           </Link>
@@ -83,11 +83,11 @@ function FeatureCard({ icon, title, description }: { icon: React.ReactNode; titl
   return (
     <motion.div
       whileHover={{ y: -5 }}
-      className="p-8 bg-white dark:bg-zinc-900/50 rounded-2xl border border-gray-100 dark:border-zinc-800 shadow-sm hover:shadow-md transition-all"
+      className="p-8 bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all"
     >
-      <div className="mb-4 p-3 bg-gray-50 dark:bg-zinc-800 rounded-xl w-fit">{icon}</div>
+      <div className="mb-4 p-3 bg-gray-50 rounded-xl w-fit">{icon}</div>
       <h3 className="text-xl font-bold mb-3">{title}</h3>
-      <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{description}</p>
+      <p className="text-gray-600 leading-relaxed">{description}</p>
     </motion.div>
   );
 }

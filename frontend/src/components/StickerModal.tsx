@@ -67,16 +67,16 @@ export default function StickerModal({ qr, url, onClose }: Props) {
             <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="bg-white dark:bg-zinc-900 w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                className="bg-white w-full max-w-lg rounded-3xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
             >
-                <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-zinc-800">
+                <div className="flex justify-between items-center p-6 border-b border-gray-100">
                     <h3 className="text-xl font-bold">Wall Sticker Preview</h3>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                         <X size={20} />
                     </button>
                 </div>
 
-                <div className="flex-1 overflow-y-auto bg-gray-50 dark:bg-black/50 p-6">
+                <div className="flex-1 overflow-y-auto bg-gray-50 p-6">
                     <div className="min-h-full w-full flex items-center justify-center p-4">
                         {/* The Sticker Design - Premium Light Mode */}
                         <div
@@ -119,7 +119,7 @@ export default function StickerModal({ qr, url, onClose }: Props) {
                     </div>
                 </div>
 
-                <div className="p-6 border-t border-gray-100 dark:border-zinc-800 bg-white dark:bg-zinc-900">
+                <div className="p-6 border-t border-gray-100 bg-white">
                     <button
                         onClick={handleDownload}
                         disabled={downloading}

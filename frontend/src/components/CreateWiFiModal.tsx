@@ -50,11 +50,11 @@ export default function CreateWiFiModal({ onClose, onCreate, initialData }: Prop
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="bg-white dark:bg-zinc-900 w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
+                className="bg-white w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
             >
-                <div className="flex justify-between items-center p-6 border-b border-gray-100 dark:border-zinc-800">
+                <div className="flex justify-between items-center p-6 border-b border-gray-100">
                     <h3 className="text-xl font-bold">{initialData ? 'Edit Wi-Fi QR' : 'New Wi-Fi QR'}</h3>
-                    <button onClick={onClose} className="p-2 hover:bg-gray-100 dark:hover:bg-zinc-800 rounded-full transition-colors">
+                    <button onClick={onClose} className="p-2 hover:bg-gray-100 rounded-full transition-colors">
                         <X size={20} />
                     </button>
                 </div>
@@ -66,7 +66,7 @@ export default function CreateWiFiModal({ onClose, onCreate, initialData }: Prop
                             type="text"
                             value={ssid}
                             onChange={(e) => setSsid(e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                             placeholder="e.g. Hotel Guest Wi-Fi"
                             required
                         />
@@ -77,7 +77,7 @@ export default function CreateWiFiModal({ onClose, onCreate, initialData }: Prop
                             type="text"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                             placeholder="e.g. securepassword123"
                             required
                         />
@@ -87,7 +87,7 @@ export default function CreateWiFiModal({ onClose, onCreate, initialData }: Prop
                         <select
                             value={encryption}
                             onChange={(e) => setEncryption(e.target.value)}
-                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-zinc-800 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
+                            className="w-full px-4 py-2.5 rounded-xl border border-gray-200 bg-gray-50 focus:ring-2 focus:ring-indigo-500 outline-none transition-all"
                         >
                             <option value="WPA">WPA/WPA2 (Most Common)</option>
                             <option value="WEP">WEP (Legacy)</option>

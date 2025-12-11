@@ -79,7 +79,7 @@ export default function Dashboard() {
             <div className="flex flex-col sm:flex-row items-center justify-between mb-8 gap-4">
                 <div>
                     <h1 className="text-3xl font-bold">Wi-Fi Dashboard</h1>
-                    <p className="text-gray-500 dark:text-gray-400 mt-1">Manage all your Wi-Fi connections here.</p>
+                    <p className="text-gray-500 mt-1">Manage all your Wi-Fi connections here.</p>
                 </div>
                 <button
                     onClick={openCreate}
@@ -90,11 +90,11 @@ export default function Dashboard() {
             </div>
 
             {qrs.length === 0 ? (
-                <div className="text-center py-20 bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-gray-300 dark:border-zinc-700">
-                    <div className="mx-auto w-16 h-16 bg-gray-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-4">
+                <div className="text-center py-20 bg-white rounded-3xl border border-dashed border-gray-300">
+                    <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                         <Wifi className="w-8 h-8 text-gray-400" />
                     </div>
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-white">No Wi-Fi QRs yet</h3>
+                    <h3 className="text-lg font-medium text-gray-900">No Wi-Fi QRs yet</h3>
                     <p className="text-gray-500 max-w-sm mx-auto mt-2 mb-6">Create your first secure Wi-Fi QR code to get started.</p>
                     <button
                         onClick={openCreate}
