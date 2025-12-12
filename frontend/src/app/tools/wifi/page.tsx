@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation';
 import api from '@/lib/api';
 import { Plus, Wifi, Search, X, Loader2 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-import WiFiCard from '@/components/WiFiCard';
-import CreateWiFiModal from '@/components/CreateWiFiModal';
+import WiFiCard from '@/components/tools/wifi/WiFiCard';
+import CreateWiFiModal from '@/components/tools/wifi/CreateWiFiModal';
 import HomeHero from '@/components/HomeHero';
 import HomeFeatures from '@/components/HomeFeatures';
 

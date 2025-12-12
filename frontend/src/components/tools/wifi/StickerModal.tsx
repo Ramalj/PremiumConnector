@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from 'react';
-import { WiFiQR } from '@/app/wifi-qr/page';
+import { WiFiQR } from '@/app/tools/wifi/page';
 import { X, Download, Loader2 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toCanvas } from 'html-to-image';

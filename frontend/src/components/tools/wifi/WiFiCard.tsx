@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { WiFiQR } from '@/app/wifi-qr/page';
+import { WiFiQR } from '@/app/tools/wifi/page';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Wifi, Power, Download, QrCode, Edit } from 'lucide-react';
@@ -30,7 +30,7 @@ export default function WiFiCard({ qr, onUpdate, onEdit }: Props) {
         }
     };
 
-    const connectUrl = `${window.location.origin}/connect/${qr.id}`;
+    const connectUrl = `${window.location.origin}/tools/wifi/connect/${qr.id}`;
 
     return (
         <>

@@ -35,7 +35,7 @@ export default function Navbar() {
                 <div className="hidden md:flex items-center gap-4">
                     {isLoggedIn ? (
                         <>
-                            <Link href="/wifi-qr" className="text-sm font-medium hover:text-indigo-600 transition-colors">
+                            <Link href="/tools/wifi" className="text-sm font-medium hover:text-indigo-600 transition-colors">
                                 Dashboard
                             </Link>
                             <button
@@ -75,7 +75,7 @@ export default function Navbar() {
                     {isLoggedIn ? (
                         <>
                             <Link
-                                href="/wifi-qr"
+                                href="/tools/wifi"
                                 className="text-base font-medium p-2 hover:bg-gray-50 rounded-lg transition-colors"
                                 onClick={() => setIsMenuOpen(false)}
                             >

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import api from '@/lib/api';
-import { WiFiQR } from '@/app/wifi-qr/page';
+import { WiFiQR } from '@/app/tools/wifi/page';
 import { X, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 

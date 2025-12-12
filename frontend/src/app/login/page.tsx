@@ -18,7 +18,7 @@ export default function LoginPage() {
             const res = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', res.data.token);
             window.dispatchEvent(new Event('storage')); // Notify Navbar
-            router.push('/wifi-qr');
+            router.push('/tools/wifi');
         } catch (err: any) {
             setError(err.response?.data?.error || 'Login failed');
         }
