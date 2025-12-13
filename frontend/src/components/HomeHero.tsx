@@ -10,7 +10,7 @@ export default function HomeHero() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.5 }}
-                className="mb-8 p-3 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold tracking-wide uppercase"
+                className="mt-20 mb-8 p-3 bg-indigo-50 text-indigo-600 rounded-full text-sm font-semibold tracking-wide uppercase"
             >
                 ✨ The Premium QR Generator
             </motion.div>
