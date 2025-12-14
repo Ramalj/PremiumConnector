@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
+import googleAuthRoutes from './routes/googleAuth';
 import wifiRoutes from './routes/tools/wifi';
 
 dotenv.config();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/auth/google', googleAuthRoutes);
 app.use('/api/wifi', wifiRoutes);
 
 app.get('/', (req, res) => {
