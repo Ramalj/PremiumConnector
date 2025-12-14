@@ -105,12 +105,7 @@ export default function Navbar() {
 
                         {isLoggedIn ? (
                             <div className="flex items-center gap-4">
-                                <Link
-                                    href="/tools/wifi-qr"
-                                    className="text-sm font-medium text-gray-600 hover:text-indigo-600 transition-colors"
-                                >
-                                    Dashboard
-                                </Link>
+
                                 <button
                                     onClick={handleLogout}
                                     className="flex items-center gap-2 text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
@@ -202,13 +197,7 @@ export default function Navbar() {
 
                             {isLoggedIn ? (
                                 <div className="space-y-3">
-                                    <Link
-                                        href="/tools/wifi-qr"
-                                        className="block px-4 py-3 rounded-xl font-medium text-gray-600 hover:bg-gray-50 hover:text-indigo-600 transition-colors"
-                                        onClick={() => setIsMenuOpen(false)}
-                                    >
-                                        Dashboard
-                                    </Link>
+
                                     <button
                                         onClick={() => { handleLogout(); setIsMenuOpen(false); }}
                                         className="flex items-center gap-2 px-4 py-3 w-full rounded-xl font-medium text-red-500 hover:bg-red-50 transition-colors"

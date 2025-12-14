@@ -96,7 +96,7 @@ export default function Home() {
             title="Wi-Fi Access"
             description="Instant connection without typing passwords. Perfect for hotels & cafes."
             gradient="from-blue-500 to-indigo-500"
-            href="/dashboard/wifi"
+            href="/tools/wifi-qr"
           />
           <ServiceCard
             icon={<UtensilsCrossed className="w-6 h-6 text-white" />}
