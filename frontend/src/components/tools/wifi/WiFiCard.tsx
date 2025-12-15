@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { WiFiQR } from '@/app/tools/wifi/page';
+import { WiFiQR } from '@/app/tools/wifi-qr/page';
 import api from '@/lib/api';
 import { motion } from 'framer-motion';
 import { Wifi, Power, Download, QrCode, Edit } from 'lucide-react';

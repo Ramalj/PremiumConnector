@@ -6,8 +6,13 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
     const token = localStorage.getItem('token');
+    const guestId = typeof window !== 'undefined' ? sessionStorage.getItem('guestId') : null;
+
     if (token) {
         config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (guestId) {
+        config.headers['x-guest-id'] = guestId;
     }
     return config;
 });

@@ -1,7 +1,8 @@
 "use client";
 
 import { useRef, useState } from 'react';
-import { WiFiQR } from '@/app/tools/wifi/page';
+import { useRouter } from 'next/navigation';
+import { WiFiQR } from '@/app/tools/wifi-qr/page';
 import { X, Download, Loader2 } from 'lucide-react';
 import { QRCodeSVG } from 'qrcode.react';
 import { toCanvas } from 'html-to-image';
@@ -16,8 +17,15 @@ interface Props {
 export default function StickerModal({ qr, url, onClose }: Props) {
     const stickerRef = useRef<HTMLDivElement>(null);
     const [downloading, setDownloading] = useState(false);
+    const router = useRouter();
 
     const handleDownload = async () => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            router.push('/login');
+            return;
+        }
+
         if (!stickerRef.current) return;
         setDownloading(true);
         try {

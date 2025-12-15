@@ -33,14 +33,19 @@ export default function Dashboard() {
             setQrs(res.data);
         } catch (err) {
             console.error(err);
-            // If unauthorized, redirect to login
-            router.push('/login');
+            // Allow unauth access - guest mode
         } finally {
             setLoading(false);
         }
     };
 
     useEffect(() => {
+        // Initialize guest session if not logged in
+        if (typeof window !== 'undefined' && !localStorage.getItem('token')) {
+            if (!sessionStorage.getItem('guestId')) {
+                sessionStorage.setItem('guestId', crypto.randomUUID());
+            }
+        }
         fetchQRs();
     }, []);
 

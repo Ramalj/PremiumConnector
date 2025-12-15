@@ -1,40 +1,69 @@
 import { Router, Response } from 'express'; // Import Response
 import pool from '../../db';
-import { authenticateToken, AuthRequest } from '../../middleware/auth';
+import { authenticateToken, authenticateOptional, AuthRequest } from '../../middleware/auth';
+
 
 const router = Router();
 
-// Get all Wi-Fi QRs for the logged-in user
-router.get('/', authenticateToken, async (req: AuthRequest, res: Response) => {
+// Get all Wi-Fi QRs for the logged-in user or guest session
+router.get('/', authenticateOptional, async (req: AuthRequest, res: Response) => {
     try {
         const userId = req.user?.id;
-        const result = await pool.query('SELECT * FROM wifi_qrs WHERE user_id = $1 ORDER BY created_at DESC', [userId]);
+        const guestId = req.headers['x-guest-id'] as string;
+
+        if (!userId && !guestId) {
+            return res.json([]);
+        }
+
+        let queryText = 'SELECT * FROM wifi_qrs WHERE ';
+        const queryParams: any[] = [];
+
+        if (userId) {
+            queryText += 'user_id = $1';
+            queryParams.push(userId);
+            if (guestId) {
+                queryText += ' OR guest_session_id = $2';
+                queryParams.push(guestId);
+            }
+        } else {
+            queryText += 'guest_session_id = $1 AND user_id IS NULL';
+            queryParams.push(guestId);
+        }
+
+        queryText += ' ORDER BY created_at DESC';
+
+        const result = await pool.query(queryText, queryParams);
         res.json(result.rows);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Failed to fetch Wi-Fi QRs' });
     }
 });
 
 // Create a new Wi-Fi QR
-router.post('/', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.post('/', authenticateOptional, async (req: AuthRequest, res: Response) => {
     const { ssid, password, encryption } = req.body;
     const userId = req.user?.id;
+    const guestId = req.headers['x-guest-id'] as string;
+
     try {
         const result = await pool.query(
-            'INSERT INTO wifi_qrs (user_id, ssid, password, encryption) VALUES ($1, $2, $3, $4) RETURNING *',
-            [userId, ssid, password, encryption || 'WPA']
+            'INSERT INTO wifi_qrs (user_id, guest_session_id, ssid, password, encryption) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+            [userId || null, userId ? null : guestId, ssid, password, encryption || 'WPA']
         );
         res.json(result.rows[0]);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Failed to create Wi-Fi QR' });
     }
 });
 
 // Update Wi-Fi QR (Edit or Toggle)
-router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) => {
+router.put('/:id', authenticateOptional, async (req: AuthRequest, res: Response) => {
     const { id } = req.params;
     const { ssid, password, is_active, encryption } = req.body;
     const userId = req.user?.id;
+    const guestId = req.headers['x-guest-id'] as string;
 
     try {
         // Dynamic update
@@ -61,8 +90,24 @@ router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) =>
 
         if (fields.length === 0) return res.status(400).json({ error: 'No fields to update' });
 
-        query += fields.join(', ') + ` WHERE id = $${fields.length + 1} AND user_id = $${fields.length + 2} RETURNING *`;
-        values.push(id, userId);
+        // WHERE clause construction
+        let whereClause = ` WHERE id = $${fields.length + 1}`;
+        values.push(id);
+
+        if (userId) {
+            whereClause += ` AND (user_id = $${fields.length + 2}`;
+            values.push(userId);
+            if (guestId) {
+                whereClause += ` OR guest_session_id = $${fields.length + 3}`;
+                values.push(guestId);
+            }
+            whereClause += ')';
+        } else {
+            whereClause += ` AND guest_session_id = $${fields.length + 2} AND user_id IS NULL`;
+            values.push(guestId);
+        }
+
+        query += fields.join(', ') + whereClause + ' RETURNING *';
 
         const result = await pool.query(query, values);
 
@@ -70,6 +115,7 @@ router.put('/:id', authenticateToken, async (req: AuthRequest, res: Response) =>
 
         res.json(result.rows[0]);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ error: 'Failed to update Wi-Fi QR' });
     }
 });
@@ -90,5 +136,6 @@ router.get('/public/:id', async (req, res) => {
         res.status(500).json({ error: 'Server error' });
     }
 });
+
 
 export default router;
