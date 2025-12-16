@@ -2,7 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { LogOut, QrCode, Menu, X, ChevronDown, Wifi } from 'lucide-react';
+import { LogOut, QrCode, Menu, X, ChevronDown, Wifi, User, FileText, CreditCard } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Navbar() {
@@ -104,14 +104,93 @@ export default function Navbar() {
                         <div className="h-6 w-px bg-gray-200"></div>
 
                         {isLoggedIn ? (
-                            <div className="flex items-center gap-4">
 
+                            <div
+                                className="relative"
+                                onMouseEnter={() => setActiveDropdown('profile')}
+                                onMouseLeave={() => setActiveDropdown(null)}
+                            >
                                 <button
-                                    onClick={handleLogout}
-                                    className="flex items-center gap-2 text-sm font-medium text-red-500 hover:text-red-600 transition-colors"
+                                    className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all duration-300 ${activeDropdown === 'profile'
+                                        ? 'bg-indigo-50 text-indigo-600 ring-1 ring-indigo-200'
+                                        : 'text-gray-600 hover:bg-gray-50 hover:text-indigo-600'
+                                        }`}
                                 >
-                                    <LogOut size={16} /> Logout
+                                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white shadow-md shadow-indigo-500/20">
+                                        <User size={18} />
+                                    </div>
+                                    <ChevronDown
+                                        size={16}
+                                        className={`transition-transform duration-200 ${activeDropdown === 'profile' ? 'rotate-180' : ''}`}
+                                    />
                                 </button>
+
+                                <AnimatePresence>
+                                    {activeDropdown === 'profile' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 10 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute top-full right-0 w-64 mt-2 p-2 bg-white rounded-2xl shadow-xl shadow-indigo-500/10 border border-gray-100 overflow-hidden"
+                                        >
+                                            <div className="relative">
+                                                <div className="absolute top-0 right-6 w-3 h-3 bg-white transform -translate-y-1.5 rotate-45 border-t border-l border-gray-100"></div>
+                                            </div>
+
+                                            <div className="space-y-1">
+                                                <Link
+                                                    href="/profile"
+                                                    className="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 transition-colors group"
+                                                >
+                                                    <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                        <User size={18} />
+                                                    </div>
+                                                    <div>
+                                                        <div className="font-medium text-gray-900">Profile</div>
+                                                        <div className="text-xs text-gray-500">Update your details</div>
+                                                    </div>
+                                                </Link>
+
+                                                <div className="group relative">
+                                                    <button disabled className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors opacity-60 cursor-not-allowed text-left">
+                                                        <div className="bg-gray-100 text-gray-500 p-2 rounded-lg">
+                                                            <FileText size={18} />
+                                                        </div>
+                                                        <div>
+                                                            <div className="font-medium text-gray-900">Payment History</div>
+                                                            <div className="text-xs text-gray-500">Coming soon</div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+
+                                                <div className="group relative">
+                                                    <button disabled className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors opacity-60 cursor-not-allowed text-left">
+                                                        <div className="bg-gray-100 text-gray-500 p-2 rounded-lg">
+                                                            <CreditCard size={18} />
+                                                        </div>
+                                                        <div>
+                                                            <div className="font-medium text-gray-900">Billing Methods</div>
+                                                            <div className="text-xs text-gray-500">Coming soon</div>
+                                                        </div>
+                                                    </button>
+                                                </div>
+
+                                                <div className="h-px bg-gray-100 my-1"></div>
+
+                                                <button
+                                                    onClick={handleLogout}
+                                                    className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-red-50 transition-colors group text-left"
+                                                >
+                                                    <div className="bg-red-100 text-red-500 p-2 rounded-lg group-hover:bg-red-600 group-hover:text-white transition-colors">
+                                                        <LogOut size={18} />
+                                                    </div>
+                                                    <div className="font-medium text-red-600">Logout</div>
+                                                </button>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                             </div>
                         ) : (
                             <div className="flex items-center gap-4">
@@ -227,6 +306,6 @@ export default function Navbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </nav>
+        </nav >
     );
 }
