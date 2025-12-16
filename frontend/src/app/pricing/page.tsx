@@ -1,0 +1,160 @@
+"use client";
+
+import { useState } from "react";
+import { motion } from "framer-motion";
+import PricingCard from "@/components/pricing/PricingCard";
+
+export default function PricingPage() {
+    const [billingCycle, setBillingCycle] = useState<"monthly" | "yearly">("monthly");
+
+    // Plan Details
+    // Pro: $15/mo -> Yearly $12/mo (20% off)
+    // Premium: $35/mo -> Yearly $28/mo (20% off)
+    const plans = [
+        {
+            name: "Free",
+            description: "Perfect for getting started with basic QR needs.",
+            monthlyPrice: 0,
+            yearlyPrice: 0,
+            features: [
+                "Create Basic QR Codes",
+                "WiFi QR Code Option",
+                "Standard Resolution",
+                "Limited Scans",
+            ],
+            isPopular: false,
+        },
+        {
+            name: "Pro",
+            description: "Unlock more power for professionals and creators.",
+            monthlyPrice: 15,
+            yearlyPrice: 12, // 20% off 15 is 12
+            features: [
+                "Everything in Free",
+                "WiFi QR Code Option",
+                "High Resolution Downloads",
+                "Custom Colors & Logos",
+                "Unlimited Scans",
+                "Vector Formats (SVG)",
+                "Priority Support",
+            ],
+            isPopular: true,
+        },
+        {
+            name: "Premium",
+            description: "Ultimate toolkit for businesses and agencies.",
+            monthlyPrice: 35,
+            yearlyPrice: 28, // 20% off 35 is 28
+            features: [
+                "Everything in Pro",
+                "WiFi QR Code Option",
+                "Dynamic QR Codes",
+                "Advanced Analytics",
+                "Bulk Generation",
+                "Team Collaboration",
+                "White Labeling",
+                "Dedicated Manager",
+            ],
+            isPopular: false,
+        },
+    ];
+
+    return (
+        // FORCED LIGHT MODE: data-theme="light", class="light" and bg-white text-gray-900 override
+        <div className="min-h-screen bg-gray-50 text-gray-900 light" data-theme="light" style={{ colorScheme: "light" }}>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+
+                {/* Header */}
+                <div className="text-center max-w-3xl mx-auto mb-16">
+                    <motion.h1
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-900 mb-6"
+                    >
+                        Simple, Transparent Pricing
+                    </motion.h1>
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.1 }}
+                        className="text-xl text-gray-600"
+                    >
+                        Choose the perfect plan for your needs. Always know what you'll pay.
+                    </motion.p>
+                </div>
+
+                {/* Toggle */}
+                <div className="flex justify-center mb-16">
+                    <div className="bg-white p-1 rounded-xl border border-gray-200 shadow-sm inline-flex relative">
+                        <motion.div
+                            layout
+                            className="absolute inset-y-1 rounded-lg bg-gray-900 shadow-sm"
+                            initial={false}
+                            animate={{
+                                x: billingCycle === "monthly" ? 4 : "calc(100% - 4px)",
+                                width: billingCycle === "monthly" ? "calc(50% - 4px)" : "calc(50% - 4px)",
+                                left: 0 // anchor
+                            }}
+                            style={{
+                                // Manually positioning based on typical widths if layout doesn't catch perfectly, 
+                                // but usually better to put the background in the button logic or use a tab approach.
+                                // Let's use a simpler class switching approach for the background with framer `layoutId`
+                                // actually, simpler approach below:
+                                display: 'none'
+                            }}
+                        />
+                        {/* Re-implementing Toggle for simplicity and robustness */}
+                        <button
+                            onClick={() => setBillingCycle("monthly")}
+                            className={`relative px-8 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:outline-none z-10 ${billingCycle === "monthly" ? "text-white" : "text-gray-600 hover:text-gray-900"
+                                }`}
+                        >
+                            {billingCycle === "monthly" && (
+                                <motion.div
+                                    layoutId="active-pill"
+                                    className="absolute inset-0 bg-gray-900 rounded-lg shadow-sm"
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                />
+                            )}
+                            <span className="relative z-10">Monthly</span>
+                        </button>
+                        <button
+                            onClick={() => setBillingCycle("yearly")}
+                            className={`relative px-8 py-2.5 text-sm font-semibold rounded-lg transition-all duration-200 focus:outline-none z-10 ${billingCycle === "yearly" ? "text-white" : "text-gray-600 hover:text-gray-900"
+                                }`}
+                        >
+                            {billingCycle === "yearly" && (
+                                <motion.div
+                                    layoutId="active-pill"
+                                    className="absolute inset-0 bg-gray-900 rounded-lg shadow-sm"
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                />
+                            )}
+                            <span className="relative z-10 flex items-center gap-2">
+                                Yearly
+                                <span className="inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase tracking-wide">
+                                    Save 20%
+                                </span>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+
+                {/* Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                    {plans.map((plan, index) => (
+                        <PricingCard
+                            key={plan.name}
+                            {...plan}
+                            price={billingCycle === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}
+                            originalPrice={billingCycle === "yearly" ? plan.monthlyPrice : undefined}
+                            billingCycle={billingCycle}
+                            onSubscribe={() => console.log(`Subscribe to ${plan.name} ${billingCycle}`)}
+                        />
+                    ))}
+                </div>
+
+            </div>
+        </div>
+    );
+}
