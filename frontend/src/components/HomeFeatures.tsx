@@ -14,7 +14,7 @@ export default function HomeFeatures() {
             <FeatureCard
                 icon={<ShieldCheck className="w-8 h-8 text-green-500" />}
                 title="Secure & Controllable"
-                description="Disable a QR code instantly from your dashboard if you want to stop sharing."
+                description="Disable a QR code instantly from your Portal if you want to stop sharing."
             />
             <FeatureCard
                 icon={<Download className="w-8 h-8 text-blue-500" />}

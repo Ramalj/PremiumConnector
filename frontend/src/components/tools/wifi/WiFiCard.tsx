@@ -30,7 +30,7 @@ export default function WiFiCard({ qr, onUpdate, onEdit }: Props) {
         }
     };
 
-    const connectUrl = `${window.location.origin}/tools/wifi/connect/${qr.id}`;
+    const connectUrl = `${window.location.origin}/tools/wifi-qr/connect/${qr.id}`;
 
     return (
         <>

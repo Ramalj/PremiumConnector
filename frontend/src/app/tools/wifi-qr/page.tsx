@@ -20,7 +20,7 @@ export interface WiFiQR {
     created_at: string;
 }
 
-export default function Dashboard() {
+export default function WifiQrTool() {
     const router = useRouter();
     const [qrs, setQrs] = useState<WiFiQR[]>([]);
     const [loading, setLoading] = useState(true);
