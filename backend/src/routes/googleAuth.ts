@@ -34,15 +34,15 @@ router.post('/', async (req, res) => {
             const hashedPassword = await bcrypt.hash(randomPassword, 10);
 
             const newUserReq = await pool.query(
-                'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
-                [email, hashedPassword]
+                'INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role',
+                [email, hashedPassword, 'Customer']
             );
             user = newUserReq.rows[0];
         }
 
         // Generate JWT
-        const jwtToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-        res.json({ token: jwtToken, user: { id: user.id, email: user.email } });
+        const jwtToken = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+        res.json({ token: jwtToken, user: { id: user.id, email: user.email, role: user.role } });
 
     } catch (error) {
         console.error('Google Auth Error:', error);

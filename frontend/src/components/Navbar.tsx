@@ -8,16 +8,48 @@ import { motion, AnimatePresence } from 'framer-motion';
 export default function Navbar() {
     const router = useRouter();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
 
     useEffect(() => {
-        setIsLoggedIn(!!localStorage.getItem('token'));
+        const checkLoginStatus = () => {
+            const token = localStorage.getItem('token');
+            const user = localStorage.getItem('user');
+            setIsLoggedIn(!!token);
+
+            if (user) {
+                try {
+                    const parsedUser = JSON.parse(user);
+                    // Check for admin role (case-insensitive)
+                    setIsAdmin(parsedUser.role && parsedUser.role.toLowerCase() === 'admin');
+                } catch (e) {
+                    console.error("Error parsing user data", e);
+                    setIsAdmin(false);
+                }
+            } else {
+                setIsAdmin(false);
+            }
+        };
+
+        // Initial check
+        checkLoginStatus();
+
+        // Listen for storage events (login/logout from other tabs or this tab)
+        window.addEventListener('storage', checkLoginStatus);
+
+        return () => {
+            window.removeEventListener('storage', checkLoginStatus);
+        };
     }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        // Dispatch storage event to update this tab's UI immediately
+        window.dispatchEvent(new Event('storage'));
         setIsLoggedIn(false);
+        setIsAdmin(false);
         router.push('/login');
     };
 
@@ -151,6 +183,26 @@ export default function Navbar() {
                                                         <div className="text-xs text-gray-500">Update your details</div>
                                                     </div>
                                                 </Link>
+
+                                                {isAdmin && (
+                                                    <Link
+                                                        href="/Dashboard"
+                                                        className="flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 transition-colors group"
+                                                    >
+                                                        <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                                                            <div className="w-[18px] h-[18px] grid grid-cols-2 gap-0.5">
+                                                                <div className="bg-current rounded-[1px]"></div>
+                                                                <div className="bg-current rounded-[1px]"></div>
+                                                                <div className="bg-current rounded-[1px]"></div>
+                                                                <div className="bg-current rounded-[1px]"></div>
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                            <div className="font-medium text-gray-900">Admin Dashboard</div>
+                                                            <div className="text-xs text-gray-500">Manage users</div>
+                                                        </div>
+                                                    </Link>
+                                                )}
 
                                                 <div className="group relative">
                                                     <button disabled className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors opacity-60 cursor-not-allowed text-left">

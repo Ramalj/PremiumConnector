@@ -11,7 +11,8 @@ const updateSchema = async () => {
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS name VARCHAR(255);",
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS address TEXT;",
             "ALTER TABLE users ADD COLUMN IF NOT EXISTS company VARCHAR(255);",
-            "ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(50);"
+            "ALTER TABLE users ADD COLUMN IF NOT EXISTS phone VARCHAR(50);",
+            "ALTER TABLE users ADD COLUMN IF NOT EXISTS role VARCHAR(20) DEFAULT 'Customer';"
         ];
 
         for (const query of queries) {

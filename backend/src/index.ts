@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 import authRoutes from './routes/auth';
 import googleAuthRoutes from './routes/googleAuth';
 import wifiRoutes from './routes/tools/wifi';
+import usersRoutes from './routes/users';
 
 dotenv.config();
 
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use('/api/auth', authRoutes);
 app.use('/api/auth/google', googleAuthRoutes);
 app.use('/api/wifi', wifiRoutes);
+app.use('/api/users', usersRoutes);
 
 app.get('/', (req, res) => {
     res.send('QRPrimeGen API Running');

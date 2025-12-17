@@ -12,8 +12,8 @@ router.post('/register', async (req, res) => {
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const result = await pool.query(
-            'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING id, email',
-            [email, hashedPassword]
+            'INSERT INTO users (email, password, role) VALUES ($1, $2, $3) RETURNING id, email, role',
+            [email, hashedPassword, 'Customer']
         );
         res.json(result.rows[0]);
     } catch (error) {
@@ -32,8 +32,8 @@ router.post('/login', async (req, res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ error: 'Invalid credentials' });
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
-        res.json({ token, user: { id: user.id, email: user.email, name: user.name } });
+        const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET as string, { expiresIn: '1h' });
+        res.json({ token, user: { id: user.id, email: user.email, name: user.name, role: user.role } });
     } catch (error) {
         res.status(500).json({ error: 'Login failed' });
     }
@@ -42,7 +42,7 @@ router.post('/login', async (req, res) => {
 // Get Current User
 router.get('/me', authenticateToken, async (req: AuthRequest, res: Response) => {
     try {
-        const result = await pool.query('SELECT id, email, name, address, company, phone FROM users WHERE id = $1', [req.user?.id]);
+        const result = await pool.query('SELECT id, email, name, address, company, phone, role FROM users WHERE id = $1', [req.user?.id]);
         if (result.rows.length === 0) return res.status(404).json({ error: 'User not found' });
         res.json(result.rows[0]);
     } catch (error) {

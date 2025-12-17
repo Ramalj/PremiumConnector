@@ -28,6 +28,7 @@ export default function LoginPage() {
         try {
             const res = await api.post('/auth/login', { email, password });
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
             window.dispatchEvent(new Event('storage')); // Notify Navbar
 
             // Check for returnUrl
@@ -44,6 +45,7 @@ export default function LoginPage() {
         try {
             const res = await api.post('/auth/google', { token: credentialResponse.credential });
             localStorage.setItem('token', res.data.token);
+            localStorage.setItem('user', JSON.stringify(res.data.user));
             window.dispatchEvent(new Event('storage')); // Notify Navbar
 
             // Check for returnUrl
