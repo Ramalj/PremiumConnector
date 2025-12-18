@@ -2,7 +2,7 @@
 "use client";
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Users, LayoutDashboard, LogOut } from 'lucide-react';
+import { Users, LayoutDashboard, LogOut, Package, ListCheck } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 export default function DashboardLayout({
@@ -23,6 +23,8 @@ export default function DashboardLayout({
     const navItems = [
         { name: 'Overview', href: '/Dashboard', icon: LayoutDashboard },
         { name: 'User Management', href: '/Dashboard/users', icon: Users },
+        { name: 'Plans', href: '/Dashboard/plans', icon: Package },
+        { name: 'Features', href: '/Dashboard/features', icon: ListCheck },
     ];
 
     return (
