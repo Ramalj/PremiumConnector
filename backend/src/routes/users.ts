@@ -7,6 +7,17 @@ import bcrypt from 'bcryptjs';
 
 const router = Router();
 
+// Get Total User Count (Admin only)
+router.get('/count', authenticateToken, checkAdmin, async (req: AuthRequest, res: Response) => {
+    try {
+        const result = await pool.query('SELECT COUNT(*) FROM users');
+        res.json({ count: parseInt(result.rows[0].count) });
+    } catch (error) {
+        console.error('Error fetching user count:', error);
+        res.status(500).json({ error: 'Failed to fetch user count' });
+    }
+});
+
 // Get All Users (Admin only)
 router.get('/', authenticateToken, checkAdmin, async (req: AuthRequest, res: Response) => {
     try {

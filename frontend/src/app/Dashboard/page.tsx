@@ -6,6 +6,10 @@ import { useRouter } from 'next/navigation';
 export default function DashboardPage() {
     const router = useRouter();
     const [user, setUser] = useState<any>(null);
+    const [stats, setStats] = useState({
+        totalUsers: 0,
+        activeUsers: 0
+    });
 
     useEffect(() => {
         const token = localStorage.getItem('token');
@@ -24,6 +28,29 @@ export default function DashboardPage() {
         }
 
         setUser(parsedUser);
+
+        // Fetch dashboard stats after verifying admin role
+        const fetchStats = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/users/count`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    setStats({
+                        totalUsers: data.count,
+                        activeUsers: data.count // For now, assuming all users are active
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching stats:', error);
+            }
+        };
+
+        fetchStats();
     }, [router]);
 
     if (!user) return null;
@@ -38,7 +65,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="bg-gradient-to-br from-indigo-500 to-violet-600 p-6 rounded-2xl text-white shadow-lg shadow-indigo-200">
                     <h3 className="text-lg font-medium opacity-90">Total Users</h3>
-                    <p className="text-3xl font-bold mt-2">--</p>
+                    <p className="text-3xl font-bold mt-2">{stats.totalUsers}</p>
                     <p className="text-sm opacity-75 mt-4">Active accounts</p>
                 </div>
                 {/* Placeholders for other stats */}
