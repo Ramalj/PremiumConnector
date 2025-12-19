@@ -34,6 +34,7 @@ const createTables = async () => {
       CREATE TABLE IF NOT EXISTS plans (
         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
         name VARCHAR(255) NOT NULL UNIQUE,
+        description TEXT,
         price_monthly DECIMAL(10, 2) NOT NULL DEFAULT 0,
         price_yearly DECIMAL(10, 2) NOT NULL DEFAULT 0,
         is_active BOOLEAN DEFAULT TRUE,
@@ -68,17 +69,17 @@ const createTables = async () => {
 
     // Seed Default Plans
     const plans = [
-      { name: 'Free', price_monthly: 0, price_yearly: 0, is_active: true },
-      { name: 'Pro', price_monthly: 9.99, price_yearly: 99.99, is_active: true },
-      { name: 'Premium', price_monthly: 19.99, price_yearly: 199.99, is_active: true },
+      { name: 'Free', description: 'Perfect for getting started with basic QR needs.', price_monthly: 0, price_yearly: 0, is_active: true },
+      { name: 'Pro', description: 'Unlock more power for professionals and creators.', price_monthly: 9.99, price_yearly: 99.99, is_active: true },
+      { name: 'Premium', description: 'Ultimate toolkit for businesses and agencies.', price_monthly: 19.99, price_yearly: 199.99, is_active: true },
     ];
 
     for (const plan of plans) {
       await client.query(`
-        INSERT INTO plans (name, price_monthly, price_yearly, is_active)
-        VALUES ($1, $2, $3, $4)
+        INSERT INTO plans (name, description, price_monthly, price_yearly, is_active)
+        VALUES ($1, $2, $3, $4, $5)
         ON CONFLICT (name) DO NOTHING;
-      `, [plan.name, plan.price_monthly, plan.price_yearly, plan.is_active]);
+      `, [plan.name, plan.description, plan.price_monthly, plan.price_yearly, plan.is_active]);
     }
 
     // Seed Default Features

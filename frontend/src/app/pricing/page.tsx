@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import PricingCard from "@/components/pricing/PricingCard";
 
@@ -10,54 +10,50 @@ export default function PricingPage() {
     // Plan Details
     // Pro: $15/mo -> Yearly $12/mo (20% off)
     // Premium: $35/mo -> Yearly $28/mo (20% off)
-    const plans = [
-        {
-            name: "Free",
-            description: "Perfect for getting started with basic QR needs.",
-            monthlyPrice: 0,
-            yearlyPrice: 0,
-            features: [
-                "Create Basic QR Codes",
-                "WiFi QR Code Option",
-                "Standard Resolution",
-                "Limited Scans",
-            ],
-            isPopular: false,
-        },
-        {
-            name: "Pro",
-            description: "Unlock more power for professionals and creators.",
-            monthlyPrice: 15,
-            yearlyPrice: 12, // 20% off 15 is 12
-            features: [
-                "Everything in Free",
-                "WiFi QR Code Option",
-                "High Resolution Downloads",
-                "Custom Colors & Logos",
-                "Unlimited Scans",
-                "Vector Formats (SVG)",
-                "Priority Support",
-            ],
-            isPopular: true,
-        },
-        {
-            name: "Premium",
-            description: "Ultimate toolkit for businesses and agencies.",
-            monthlyPrice: 35,
-            yearlyPrice: 28, // 20% off 35 is 28
-            features: [
-                "Everything in Pro",
-                "WiFi QR Code Option",
-                "Dynamic QR Codes",
-                "Advanced Analytics",
-                "Bulk Generation",
-                "Team Collaboration",
-                "White Labeling",
-                "Dedicated Manager",
-            ],
-            isPopular: false,
-        },
-    ];
+    const [plans, setPlans] = useState<any[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchPlans = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/plans`);
+                if (!response.ok) throw new Error('Failed to fetch plans');
+                const data = await response.json();
+
+                // Transform backend data to frontend structure
+                const formattedPlans = data.map((plan: any) => ({
+                    name: plan.name,
+                    description: plan.description,
+                    monthlyPrice: parseFloat(plan.price_monthly),
+                    yearlyPrice: parseFloat(plan.price_yearly),
+                    features: plan.features
+                        .filter((f: any) => f.feature_active_in_plan)
+                        .map((f: any) => f.display_text || f.name),
+                    isPopular: plan.name === 'Pro', // Logic to determine popular plan
+                }));
+
+                // Sort plans by price (optional, but good practice if DB doesn't ensure it)
+                formattedPlans.sort((a: any, b: any) => a.monthlyPrice - b.monthlyPrice);
+
+                setPlans(formattedPlans);
+            } catch (error) {
+                console.error('Error loading plans:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPlans();
+    }, []);
+
+    // Loading State
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
+            </div>
+        );
+    }
 
     return (
         // FORCED LIGHT MODE: data-theme="light", class="light" and bg-white text-gray-900 override
