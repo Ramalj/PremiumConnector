@@ -8,12 +8,19 @@ import usersRoutes from './routes/users';
 import plansRoutes from './routes/plans';
 import featuresRoutes from './routes/features';
 
+import subscriptionRoutes from './routes/subscription';
+import webhookRoutes from './routes/webhook';
+
 dotenv.config();
 
 const app = express();
 const port = process.env.PORT || 8080;
 
 app.use(cors());
+
+// Webhook route needs raw body, so define it before express.json()
+app.use('/webhook', webhookRoutes);
+
 app.use(express.json());
 
 // Routes
@@ -23,6 +30,7 @@ app.use('/api/wifi', wifiRoutes);
 app.use('/api/users', usersRoutes);
 app.use('/api/plans', plansRoutes);
 app.use('/api/features', featuresRoutes);
+app.use('/api/subscription', subscriptionRoutes);
 
 app.get('/', (req, res) => {
     res.send('QRPrimeGen API Running');

@@ -205,15 +205,18 @@ export default function Navbar() {
                                                 )}
 
                                                 <div className="group relative">
-                                                    <button disabled className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors opacity-60 cursor-not-allowed text-left">
-                                                        <div className="bg-gray-100 text-gray-500 p-2 rounded-lg">
+                                                    <Link
+                                                        href="/payment-history"
+                                                        className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-indigo-50 transition-colors group"
+                                                    >
+                                                        <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg group-hover:bg-indigo-600 group-hover:text-white transition-colors">
                                                             <FileText size={18} />
                                                         </div>
                                                         <div>
-                                                            <div className="font-medium text-gray-900">Payment History</div>
-                                                            <div className="text-xs text-gray-500">Coming soon</div>
+                                                            <div className="font-medium text-gray-900">Payment Settings</div>
+                                                            <div className="text-xs text-gray-500">View transactions</div>
                                                         </div>
-                                                    </button>
+                                                    </Link>
                                                 </div>
 
                                                 <div className="group relative">

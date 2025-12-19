@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import PricingCard from "@/components/pricing/PricingCard";
 
@@ -12,6 +13,7 @@ export default function PricingPage() {
     // Premium: $35/mo -> Yearly $28/mo (20% off)
     const [plans, setPlans] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchPlans = async () => {
@@ -22,6 +24,7 @@ export default function PricingPage() {
 
                 // Transform backend data to frontend structure
                 const formattedPlans = data.map((plan: any) => ({
+                    id: plan.id, // Added ID
                     name: plan.name,
                     description: plan.description,
                     monthlyPrice: parseFloat(plan.price_monthly),
@@ -45,6 +48,45 @@ export default function PricingPage() {
 
         fetchPlans();
     }, []);
+
+    const handleSubscribe = async (planId: string) => {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Redirect to login if not logged in
+            window.location.href = `/login?redirect=/pricing`;
+            return;
+        }
+
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080'}/api/subscription/create-checkout-session`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ planId })
+            });
+
+            if (!response.ok) {
+                if (response.status === 401 || response.status === 403) {
+                    localStorage.removeItem('token');
+                    window.location.href = `/login?redirect=/pricing`;
+                    return;
+                }
+                const error = await response.json();
+                alert(error.error || 'Failed to start subscription');
+                return;
+            }
+
+            const data = await response.json();
+            if (data.url) {
+                window.location.href = data.url;
+            }
+        } catch (error) {
+            console.error('Error subscribing:', error);
+            alert('Something went wrong. Please try again.');
+        }
+    };
 
     // Loading State
     if (loading) {
@@ -145,7 +187,7 @@ export default function PricingPage() {
                             price={billingCycle === "monthly" ? plan.monthlyPrice : plan.yearlyPrice}
                             originalPrice={billingCycle === "yearly" ? plan.monthlyPrice : undefined}
                             billingCycle={billingCycle}
-                            onSubscribe={() => console.log(`Subscribe to ${plan.name} ${billingCycle}`)}
+                            onSubscribe={() => handleSubscribe(plan.id)}
                         />
                     ))}
                 </div>
