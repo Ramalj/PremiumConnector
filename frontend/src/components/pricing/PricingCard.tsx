@@ -83,7 +83,7 @@ export default function PricingCard({
             </button>
 
             <div className="space-y-4 flex-1">
-                <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
+                <p className="text-xs font-semibold text-gray-900 uppercase tracking-wide">
                     {name.toLowerCase() === 'free' ? "Static Features / Life Time QR" :
                         (name.toLowerCase() === 'pro' || name.toLowerCase() === 'premium') ? "Life time Editable Premium QR Features" : "Features"}
                 </p>

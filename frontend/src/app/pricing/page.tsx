@@ -22,6 +22,16 @@ export default function PricingPage() {
                 if (!response.ok) throw new Error('Failed to fetch plans');
                 const data = await response.json();
 
+                // Calculate feature counts for sorting
+                const featureCounts: { [key: string]: number } = {};
+                data.forEach((plan: any) => {
+                    plan.features.forEach((f: any) => {
+                        if (f.feature_active_in_plan) {
+                            featureCounts[f.id] = (featureCounts[f.id] || 0) + 1;
+                        }
+                    });
+                });
+
                 // Transform backend data to frontend structure
                 const formattedPlans = data.map((plan: any) => ({
                     id: plan.id, // Added ID
@@ -31,6 +41,14 @@ export default function PricingPage() {
                     yearlyPrice: parseFloat(plan.price_yearly),
                     features: plan.features
                         .filter((f: any) => f.feature_active_in_plan)
+                        .sort((a: any, b: any) => {
+                            const countA = featureCounts[a.id] || 0;
+                            const countB = featureCounts[b.id] || 0;
+                            // Sort by count descending (common features first)
+                            if (countB !== countA) return countB - countA;
+                            // Secondary sort by name
+                            return (a.display_text || a.name).localeCompare(b.display_text || b.name);
+                        })
                         .map((f: any) => f.display_text || f.name),
                     isPopular: plan.name === 'Pro', // Logic to determine popular plan
                 }));
