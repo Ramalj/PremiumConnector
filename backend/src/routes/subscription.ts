@@ -2,6 +2,7 @@ import express from 'express';
 import { stripe } from '../lib/stripe';
 import pool from '../db';
 import { authenticateToken } from '../middleware/auth';
+import { checkAdmin } from '../middleware/admin';
 
 const router = express.Router();
 
@@ -201,6 +202,68 @@ router.get('/history', authenticateToken, async (req: any, res) => {
         res.json(result.rows);
     } catch (error) {
         console.error('Error fetching payment history:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+/**
+ * @route GET /api/subscription/admin/payments
+ * @desc Get all payments (Admin only)
+ * @access Private/Admin
+ */
+router.get('/admin/payments', authenticateToken, checkAdmin, async (req: any, res) => {
+    try {
+        const query = `
+            SELECT 
+                p.id,
+                p.amount,
+                p.currency,
+                p.status,
+                p.created_at,
+                p.receipt_url,
+                u.email as user_email,
+                u.name as user_name
+            FROM payments p
+            JOIN users u ON p.user_id = u.id
+            ORDER BY p.created_at DESC
+        `;
+
+        const result = await pool.query(query);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching all payments:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+/**
+ * @route GET /api/subscription/admin/subscribers
+ * @desc Get all subscribers (Admin only)
+ * @access Private/Admin
+ */
+router.get('/admin/subscribers', authenticateToken, checkAdmin, async (req: any, res) => {
+    try {
+        const query = `
+            SELECT 
+                s.id,
+                s.status,
+                s.current_period_end,
+                s.cancel_at_period_end,
+                u.email as user_email,
+                u.name as user_name,
+                p.name as plan_name,
+                p.price_monthly,
+                p.price_yearly
+            FROM subscriptions s
+            JOIN users u ON s.user_id = u.id
+            JOIN plans p ON s.stripe_price_id = p.stripe_price_id
+            ORDER BY s.created_at DESC
+        `;
+
+        const result = await pool.query(query);
+        res.json(result.rows);
+    } catch (error) {
+        console.error('Error fetching all subscribers:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 });

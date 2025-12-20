@@ -84,7 +84,8 @@ export default function PricingCard({
 
             <div className="space-y-4 flex-1">
                 <p className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-                    Features
+                    {name.toLowerCase() === 'free' ? "Static Features / Life Time QR" :
+                        (name.toLowerCase() === 'pro' || name.toLowerCase() === 'premium') ? "Life time Editable Premium QR Features" : "Features"}
                 </p>
                 <ul className="space-y-3">
                     {features.map((feature, index) => (
