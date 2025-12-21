@@ -90,7 +90,7 @@ export default function PricingCard({
                 <ul className="space-y-3">
                     {features.map((feature, index) => (
                         <li key={index} className="flex items-start">
-                            <Check className="h-5 w-5 text-blue-500 shrink-0 mr-3" />
+                            <Check className="h-5 w-5 text-blue-600 shrink-0 mr-3" />
                             <span className="text-sm text-gray-600 leading-relaxed">
                                 {feature}
                             </span>
