@@ -2,7 +2,7 @@ import Stripe from 'stripe';
 import { Pool } from 'pg';
 
 // Remove apiVersion to use default
-const stripe = new Stripe('sk_test_REDACTED');
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
 
 const connectionString = 'postgres://qr_app_user:2b12mHEKivysTQo5U@localhost:5432/qr_generator?sslmode=disable';
 
